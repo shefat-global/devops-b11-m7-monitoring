@@ -98,7 +98,7 @@ DATABASES = {
    "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "portfolio_cms",
-        "USER": "root",
+        "USER": "portfolio_user",
         "PASSWORD": "4488",
         "HOST": "127.0.0.1",
         "PORT": "3306",
@@ -202,8 +202,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Allow only the specific origin for CORS (your frontend app)
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Allow requests from your Next.js frontend
-    "*",
+    "http://localhost:3000",  # Allow requests from your Next.js frontend    
 ]
 
 # Optionally, restrict CORS methods (GET, POST, PUT, DELETE) and headers (Content-Type, X-Requested-With)

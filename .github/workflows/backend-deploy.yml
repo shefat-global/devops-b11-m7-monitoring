@@ -1,0 +1,80 @@
+name: Deploy Backend to EC2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare remote deploy folder
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: |
+            rm -rf /tmp/backend-deploy
+            mkdir -p /tmp/backend-deploy
+
+      - name: Upload backend folder to EC2
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          source: "backend"
+          target: "/tmp/backend-deploy"
+
+      - name: Deploy backend on EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: |
+            set -e
+
+            LIVE_BACKEND="/home/ubuntu/backend"
+            RELEASE_BACKEND="/tmp/backend-deploy/backend"
+
+            echo "Syncing backend code..."
+            rsync -av --delete \
+              --exclude "venv/" \
+              --exclude ".env" \
+              --exclude "media/" \
+              --exclude "static/" \
+              --exclude "__pycache__/" \
+              --exclude "*.pyc" \
+              "$RELEASE_BACKEND/" "$LIVE_BACKEND/"
+
+            echo "Activating virtual environment..."
+            cd "$LIVE_BACKEND"
+            source "$LIVE_BACKEND/venv/bin/activate"
+
+            echo "Installing dependencies..."
+            pip install -r requirements.txt
+
+            echo "Running migrations..."
+            python manage.py migrate --noinput
+
+            echo "Collecting static files..."
+            python manage.py collectstatic --noinput
+
+            echo "Restarting backend service..."
+            sudo systemctl restart wagtail
+
+            echo "Restarting nginx..."
+            sudo systemctl restart nginx
+
+            echo "Checking service..."
+            sudo systemctl status wagtail --no-pager
+
+            echo "Deployment successful."
