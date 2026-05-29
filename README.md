@@ -1536,3 +1536,67 @@ Then I installed and configured Prometheus on a separate monitoring EC2 instance
 
 This completes my assignment progress up to the Prometheus monitoring setup.
 
+
+---
+
+# Screenshots
+
+I added the screenshots of my backend deployment, CI/CD workflow, Node Exporter, and Prometheus setup inside the `screenshots` folder of my GitHub repository.
+
+The screenshots show the important steps and verification outputs from my Module 7 assignment.
+
+## Screenshot 1
+
+![Screenshot 1](screenshots/Screenshot_1.png)
+
+## Screenshot 2
+
+![Screenshot 2](screenshots/Screenshot_2.png)
+
+## Screenshot 3
+
+![Screenshot 3](screenshots/Screenshot_3.png)
+
+## Screenshot 4
+
+![Screenshot 4](screenshots/Screenshot_4.png)
+
+## Screenshot 5
+
+![Screenshot 5](screenshots/Screenshot_5.png)
+
+## Screenshot 6
+
+![Screenshot 6](screenshots/Screenshot_6.png)
+
+## Screenshot 7
+
+![Screenshot 7](screenshots/Screenshot_7.png)
+
+## Screenshot 8
+
+![Screenshot 8](screenshots/Screenshot_8.png)
+
+## Screenshot 9
+
+![Screenshot 9](screenshots/Screenshot_9.png)
+
+## Screenshot 10
+
+![Screenshot 10](screenshots/Screenshot_10.png)
+
+## Screenshot 11
+
+![Screenshot 11](screenshots/Screenshot_11.png)
+
+---
+
+# Repository Screenshot Folder
+
+All screenshots are stored in the following repository folder:
+
+```text
+screenshots/
+```
+
+These screenshots are included as proof of deployment, configuration, service status, monitoring setup, and final verification.
